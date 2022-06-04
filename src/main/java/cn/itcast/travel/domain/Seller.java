@@ -1,11 +1,16 @@
 package cn.itcast.travel.domain;
 
+import cn.itcast.travel.anotation.Id;
+import cn.itcast.travel.anotation.Table;
+
 import java.io.Serializable;
 
 /**
  * 商家实体类
  */
+@Table(name = "tab_seller")
 public class Seller implements Serializable {
+    @Id
     private int sid;//商家id
     private String sname;//商家名称
     private String consphone;//商家电话
