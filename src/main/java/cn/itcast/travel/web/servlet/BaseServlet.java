@@ -114,7 +114,7 @@ public class BaseServlet extends HttpServlet {
                     // 设置响应编码
                     resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
                     // 设置响应内容类型
-                    resp.setContentType("application/json; charset=utf-8");
+                    resp.setContentType("application/json");
                     // 将结果转换为json
                     ObjectMapper mapper = new ObjectMapper();
                     String json = mapper.writeValueAsString(res);
