@@ -1,13 +1,17 @@
 package cn.itcast.travel.domain;
 
+import cn.itcast.travel.anotation.Id;
+import cn.itcast.travel.anotation.Table;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 旅游线路商品实体类
  */
+@Table(name = "tab_route")
 public class Route implements Serializable {
-
+    @Id
     private int rid;//线路id，必输
     private String rname;//线路名称，必输
     private double price;//价格，必输

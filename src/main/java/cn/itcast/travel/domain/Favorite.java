@@ -1,13 +1,19 @@
 package cn.itcast.travel.domain;
 
+import cn.itcast.travel.anotation.Table;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 收藏实体类
  */
+@Table(name = "tab_favorite")
 public class Favorite implements Serializable {
-    private Route route;//旅游线路对象
+    private int rid;
+    private int uid;
     private String date;//收藏时间
+    private Route route;//旅游线路对象
     private User user;//所属用户
 
     /**

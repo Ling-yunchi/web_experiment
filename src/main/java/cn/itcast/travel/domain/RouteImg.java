@@ -1,11 +1,16 @@
 package cn.itcast.travel.domain;
 
+import cn.itcast.travel.anotation.Id;
+import cn.itcast.travel.anotation.Table;
+
 import java.io.Serializable;
 
 /**
  * 旅游线路图片实体类
  */
+@Table(name = "tab_route_img")
 public class RouteImg implements Serializable {
+    @Id
     private int rgid;//商品图片id
     private int rid;//旅游商品id
     private String bigPic;//详情商品大图

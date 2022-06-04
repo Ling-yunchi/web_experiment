@@ -1,11 +1,17 @@
 package cn.itcast.travel.domain;
 
+import cn.itcast.travel.anotation.Id;
+import cn.itcast.travel.anotation.Table;
+import lombok.ToString;
+
 import java.io.Serializable;
 
 /**
  * 用户实体类
  */
+@Table(name = "tab_user")
 public class User implements Serializable {
+    @Id
     private int uid;//用户id
     private String username;//用户名，账号
     private String password;//密码
@@ -127,5 +133,21 @@ public class User implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", sex='" + sex + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", code='" + code + '\'' +
+                '}';
     }
 }
