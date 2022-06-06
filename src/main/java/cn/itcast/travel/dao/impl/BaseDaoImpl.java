@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -89,6 +90,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<T> findAll() {
+        String sql = "select * from " + tableName;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<T>(clazz));
     }
 
     @Override

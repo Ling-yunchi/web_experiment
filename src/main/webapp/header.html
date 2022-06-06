@@ -1,5 +1,6 @@
 <script>
     $(() => {
+        $("div.logout").hide();
         $.get("/user/self", {}, (data) => {
             let username = $("#span_username")
             if (!data.flag) {
@@ -11,6 +12,14 @@
                 username.html("欢迎回来，" + data.data.username);
             }
         });
+        $.get("/category/findAll", {}, (date) => {
+            let list = '<li class="nav-active"><a href="index.html">首页</a></li>'
+            date.data.forEach(item => {
+                list += `<li><a href="route_list.html?cid=${item.cid}">${item.name}</a></li>`
+            });
+            list += '<li><a href="favoriterank.html">收藏排行榜</a></li>'
+            $("#nav_list").html(list);
+        })
     })
 </script>
 

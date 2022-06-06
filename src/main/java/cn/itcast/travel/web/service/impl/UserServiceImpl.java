@@ -56,7 +56,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(HttpServletRequest res, HttpServletResponse resp) throws IOException {
-        res.getSession().removeAttribute(USER_SESSION_KEY);
+        res.getSession().invalidate();
         resp.sendRedirect(res.getContextPath() + "/login.html");
+    }
+
+    @Override
+    public ResultInfo active(Integer id, String code) {
+        if (code == null) {
+            return new ResultInfo(false, "激活码不能为空");
+        }
+        User user = userDao.findById(id);
+        if (user == null) {
+            return new ResultInfo(false, "用户不存在");
+        }
+        user.setCode(code);
+        user.setStatus("Y");
+        userDao.save(user);
+        return new ResultInfo(true, "激活成功");
     }
 }
