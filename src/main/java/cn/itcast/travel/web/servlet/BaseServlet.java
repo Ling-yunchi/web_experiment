@@ -1,6 +1,7 @@
 package cn.itcast.travel.web.servlet;
 
 import cn.itcast.travel.anotation.RequestBody;
+import cn.itcast.travel.module.PageResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.beanutils.BeanUtils;
@@ -34,13 +35,7 @@ public class BaseServlet extends HttpServlet {
 
         // 获取传入的所有参数
         Map<String, String[]> inParams = req.getParameterMap();
-        Map<String, String> inQuery = new HashMap<>(16);
-        if (req.getQueryString() != null) {
-            for (String s : req.getQueryString().split("&")) {
-                String[] tmp = s.split("=");
-                inQuery.put(tmp[0], tmp[1]);
-            }
-        }
+        log.info("inParams: " + inParams.entrySet().stream().map(e -> e.getKey() + "=" + Arrays.toString(e.getValue())).collect(Collectors.joining("&")));
 
         // 获取所有方法
         List<Method> methods = Arrays.asList(this.getClass().getDeclaredMethods());
@@ -88,7 +83,7 @@ public class BaseServlet extends HttpServlet {
                 } else {
                     if (inParams.containsKey(p.getName())) {
                         log.debug("parser request param: " + p.getName());
-                        String rawValue = inQuery.get(p.getName());
+                        String rawValue = inParams.get(p.getName())[0];
                         // 尝试将参数值转换为目标类型
                         try {
                             value = p.getType().getConstructor(String.class).newInstance(rawValue);

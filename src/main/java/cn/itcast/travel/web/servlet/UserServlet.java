@@ -24,6 +24,10 @@ public class UserServlet extends BaseServlet {
         return userService.login(user, res);
     }
 
+    public ResultInfo active(Integer id, String code) throws Exception {
+        return userService.active(id, code);
+    }
+
     public ResultInfo self(HttpServletRequest res) throws Exception {
         return userService.self(res);
     }

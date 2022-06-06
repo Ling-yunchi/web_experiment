@@ -9,14 +9,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @CommonsLog
 public class BaseDaoImpl<T> implements BaseDao<T> {
     private final Class<T> clazz;
-    private String tableName;
-    private String idFieldName;
+    protected String tableName;
+    protected String idFieldName;
     private final Map<String, Method> columnGetterMap;
 
     protected final JdbcTemplate jdbcTemplate;
@@ -92,6 +93,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
+    public List<T> findAll() {
+        String sql = "select * from " + tableName;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<T>(clazz));
+    }
+
+    @Override
     public int save(T t) {
         Object idValue = null;
         try {
@@ -140,6 +147,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
         log.debug("save sql: " + sql.toString());
         return jdbcTemplate.update(sql.toString());
+    }
+
+    @Override
+    public int count() {
+        String sql = "select count(*) from " + tableName;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
 

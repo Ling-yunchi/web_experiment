@@ -4,7 +4,6 @@ import cn.itcast.travel.anotation.Id;
 import cn.itcast.travel.anotation.Table;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 旅游线路商品实体类
@@ -15,7 +14,7 @@ public class Route implements Serializable {
     private Integer rid;//线路id，必输
     private String rname;//线路名称，必输
     private double price;//价格，必输
-    private String routeIntegerroduce;//线路介绍
+    private String routeIntroduce;//线路介绍
     private String rflag;   //是否上架，必输，0代表没有上架，1代表是上架
     private String rdate;   //上架时间
     private String isThemeTour;//是否主题旅游，必输，0代表不是，1代表是
@@ -25,9 +24,9 @@ public class Route implements Serializable {
     private Integer sid;//所属商家
     private String sourceId;//抓取数据的来源id
 
-    private Category category;//所属分类
-    private Seller seller;//所属商家
-    private List<RouteImg> routeImgList;//商品详情图片列表
+//    private Category category;//所属分类
+//    private Seller seller;//所属商家
+//    private List<RouteImg> routeImgList;//商品详情图片列表
 
 
 
@@ -42,7 +41,7 @@ public class Route implements Serializable {
      * @param rid
      * @param rname
      * @param price
-     * @param routeIntegerroduce
+     * @param routeIntroduce
      * @param rflag
      * @param rdate
      * @param isThemeTour
@@ -52,11 +51,11 @@ public class Route implements Serializable {
      * @param sid
      * @param sourceId
      */
-    public Route(Integer rid, String rname, double price, String routeIntegerroduce, String rflag, String rdate, String isThemeTour, Integer count, Integer cid, String rimage, Integer sid, String sourceId) {
+    public Route(Integer rid, String rname, double price, String routeIntroduce, String rflag, String rdate, String isThemeTour, Integer count, Integer cid, String rimage, Integer sid, String sourceId) {
         this.rid = rid;
         this.rname = rname;
         this.price = price;
-        this.routeIntegerroduce = routeIntegerroduce;
+        this.routeIntroduce = routeIntroduce;
         this.rflag = rflag;
         this.rdate = rdate;
         this.isThemeTour = isThemeTour;
@@ -67,29 +66,29 @@ public class Route implements Serializable {
         this.sourceId = sourceId;
     }
 
-    public List<RouteImg> getRouteImgList() {
-        return routeImgList;
-    }
-
-    public void setRouteImgList(List<RouteImg> routeImgList) {
-        this.routeImgList = routeImgList;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-    }
+//    public List<RouteImg> getRouteImgList() {
+//        return routeImgList;
+//    }
+//
+//    public void setRouteImgList(List<RouteImg> routeImgList) {
+//        this.routeImgList = routeImgList;
+//    }
+//
+//    public Category getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(Category category) {
+//        this.category = category;
+//    }
+//
+//    public Seller getSeller() {
+//        return seller;
+//    }
+//
+//    public void setSeller(Seller seller) {
+//        this.seller = seller;
+//    }
 
     public String getSourceId() {
         return sourceId;
@@ -123,12 +122,12 @@ public class Route implements Serializable {
         this.price = price;
     }
 
-    public String getRouteIntegerroduce() {
-        return routeIntegerroduce;
+    public String getRouteIntroduce() {
+        return routeIntroduce;
     }
 
-    public void setRouteIntegerroduce(String routeIntegerroduce) {
-        this.routeIntegerroduce = routeIntegerroduce;
+    public void setRouteIntroduce(String routeIntroduce) {
+        this.routeIntroduce = routeIntroduce;
     }
 
     public String getRflag() {
@@ -185,5 +184,23 @@ public class Route implements Serializable {
 
     public void setSid(Integer sid) {
         this.sid = sid;
+    }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "rid=" + rid +
+                ", rname='" + rname + '\'' +
+                ", price=" + price +
+                ", routeIntroduce='" + routeIntroduce + '\'' +
+                ", rflag='" + rflag + '\'' +
+                ", rdate='" + rdate + '\'' +
+                ", isThemeTour='" + isThemeTour + '\'' +
+                ", count=" + count +
+                ", cid=" + cid +
+                ", rimage='" + rimage + '\'' +
+                ", sid=" + sid +
+                ", sourceId='" + sourceId + '\'' +
+                '}';
     }
 }

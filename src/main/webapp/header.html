@@ -1,15 +1,32 @@
 <script>
     $(() => {
+        $("div.logout").hide();
         $.get("/user/self", {}, (data) => {
-            let username = $("#span_username")
             if (!data.flag) {
                 $("div.login_out").show()
                 $("div.login").hide();
             } else {
                 $("div.login_out").hide()
                 $("div.login").show()
-                username.html("欢迎回来，" + data.data.username);
+                $("#span_username").text("欢迎回来，" + data.data.username);
             }
+        });
+        $.get("/category/findAll", {}, (date) => {
+            let list = '<li class="nav-active"><a href="index.html">首页</a></li>'
+            date.data.sort((a, b) => {
+                return a.cid === b.cid ? 0 : (a.cid < b.cid ? -1 : 1)
+            }).forEach(item => {
+                list += `<li><a href="route_list.html?cid=${item.cid}">${item.cname}</a></li>`
+            });
+            list += '<li><a href="favoriterank.html">收藏排行榜</a></li>'
+
+            $("#nav_list").html(list);
+        })
+        $("#search_button").click(() => {
+            let rname = $("#search_input").val();
+            rname = encodeURIComponent(rname);
+            let cid = getParameter("cid");
+            location.href = `route_list.html?cid=${cid}&rname=${rname}`;
         });
     })
 </script>
@@ -38,8 +55,9 @@
                 <a href="/"><img src="images/logo.jpg" alt=""></a>
             </div>
             <div class="search">
-                <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                <a href="javascript:;" class="search-button">搜索</a>
+                <input id="search_input" name="" type="text" placeholder="请输入路线名称" class="search_input"
+                       autocomplete="off">
+                <a id="search_button" href="javascript:;" class="search-button">搜索</a>
             </div>
             <div class="hottel">
                 <div class="hot_pic">
@@ -56,17 +74,6 @@
 <!-- 头部 end -->
 <!-- 首页导航 -->
 <div class="navitem">
-    <ul class="nav">
-        <li class="nav-active"><a href="index.html">首页</a></li>
-        <li><a href="route_list.html">门票</a></li>
-        <li><a href="route_list.html">酒店</a></li>
-        <li><a href="route_list.html">香港车票</a></li>
-        <li><a href="route_list.html">出境游</a></li>
-        <li><a href="route_list.html">国内游</a></li>
-        <li><a href="route_list.html">港澳游</a></li>
-        <li><a href="route_list.html">抱团定制</a></li>
-        <li><a href="route_list.html">全球自由行</a></li>
-        <li><a href="favoriterank.html">收藏排行榜</a></li>
-    </ul>
+    <ul id="nav_list" class="nav"></ul>
 </div>
     
