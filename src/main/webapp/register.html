@@ -50,12 +50,11 @@
         $(() => {
             $("#registerForm").submit(() => {
                 if (checkUsername() && checkPassword() && checkEmail()) {
-                    $.post("/user/register?id=123",$("#registerForm").serialize(),(data)=>{
-                        console.log(data);
-                        if(data.flag===true){
+                    $.post("/user/register", $("#registerForm").serialize(), (data) => {
+                        if (data.flag === true) {
                             alert("注册成功");
-                            window.location.href="login.html";
-                        }else{
+                            window.location.href = "login.html";
+                        } else {
                             alert("注册失败");
                         }
                     });

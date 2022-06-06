@@ -34,11 +34,11 @@ public class BaseServlet extends HttpServlet {
 
         // 获取传入的所有参数
         Map<String, String[]> inParams = req.getParameterMap();
-        Map<String, String> inQuery = new HashMap<>();
+        Map<String, String> inQuery = new HashMap<>(16);
         if (req.getQueryString() != null) {
             for (String s : req.getQueryString().split("&")) {
-                String[] split = s.split("=");
-                inQuery.put(split[0], split[1]);
+                String[] tmp = s.split("=");
+                inQuery.put(tmp[0], tmp[1]);
             }
         }
 
@@ -51,6 +51,7 @@ public class BaseServlet extends HttpServlet {
         if (matchMethods.size() == 0) {
             log.info("method not found");
             resp.setStatus(404);
+            log.info("-------------------------");
             return;
         }
 
@@ -66,7 +67,7 @@ public class BaseServlet extends HttpServlet {
                 RequestBody annotation = p.getAnnotation(RequestBody.class);
                 Object value = null;
                 if (annotation != null) {
-                    log.info("parser request body");
+                    log.debug("parser request body");
                     try {
                         value = p.getType().getConstructor().newInstance();
                         for (String key : inParams.keySet()) {
@@ -74,18 +75,26 @@ public class BaseServlet extends HttpServlet {
                         }
                     } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
                         log.error("parser body error: ", e);
+                        log.error("cause: " + getRealCause(e));
                         flag = false;
                         break;
                     }
+                } else if (p.getType().equals(HttpServletRequest.class)) {
+                    log.debug("parser request");
+                    value = req;
+                } else if (p.getType().equals(HttpServletResponse.class)) {
+                    log.debug("parser response");
+                    value = resp;
                 } else {
                     if (inParams.containsKey(p.getName())) {
-                        log.info("parser request param: " + p.getName());
+                        log.debug("parser request param: " + p.getName());
                         String rawValue = inQuery.get(p.getName());
                         // 尝试将参数值转换为目标类型
                         try {
                             value = p.getType().getConstructor(String.class).newInstance(rawValue);
                         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                             log.error("can not convert value to type: " + p.getType().getName());
+                            log.error("cause: " + getRealCause(e));
                             flag = false;
                             break;
                         }
@@ -104,29 +113,42 @@ public class BaseServlet extends HttpServlet {
                 try {
                     res = method.invoke(this, paramValues);
                 } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
                     log.error("can not invoke method: " + method.getName());
+                    log.error("cause: " + getRealCause(e));
                     resp.setStatus(500);
+                    log.info("-------------------------");
                     return;
                 }
-                log.info("response: " + res.toString());
-                resp.setStatus(200);
-                if (res != null) {
+                log.info("response: " + (res == null ? "null" : res.toString()));
+                if (res != null && !"".equals(res.toString())) {
+                    resp.setStatus(200);
                     // 设置响应编码
                     resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
                     // 设置响应内容类型
-                    resp.setContentType("application/json");
+                    resp.setContentType("application/json;charset=utf-8");
                     // 将结果转换为json
                     ObjectMapper mapper = new ObjectMapper();
                     String json = mapper.writeValueAsString(res);
                     // 响应内容
                     resp.getWriter().write(json);
                 }
-                return;
             } else {
                 log.error("parameter type error");
                 resp.setStatus(400);
-                return;
             }
+            log.info("-------------------------");
+            return;
         }
+    }
+
+    static String getRealCause(Throwable e) {
+        StringBuilder sb = new StringBuilder();
+        Throwable cause = e.getCause();
+        while (cause != null) {
+            sb.append(cause.getMessage());
+            cause = cause.getCause();
+        }
+        return sb.toString();
     }
 }

@@ -15,9 +15,24 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!--导入angularJS文件-->
-    <script src="js/angular.min.js"></script>
+    <!--<script src="js/angular.min.js"></script>-->
     <!--导入jquery-->
     <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(() => {
+            $("#errorMsg").hide();
+            $("#btn_sub").click(() => {
+                $.post("/user/login", $("#loginForm").serialize(), (data) => {
+                    if (data.flag === true) {
+                        window.location.href = "index.html";
+                    } else {
+                        $("#errorMsg").show().html(data.message)
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -42,7 +57,7 @@
                 <input name="username" type="text" placeholder="请输入账号" autocomplete="off">
                 <input name="password" type="text" placeholder="请输入密码" autocomplete="off">
                 <div class="submit_btn">
-                    <button type="button">登录</button>
+                    <button id="btn_sub" type="button">登录</button>
                     <div class="auto_login">
                         <input type="checkbox" name="" class="checkbox">
                         <span>自动登录</span>

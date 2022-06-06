@@ -2,7 +2,6 @@ package cn.itcast.travel.domain;
 
 import cn.itcast.travel.anotation.Id;
 import cn.itcast.travel.anotation.Table;
-import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -12,7 +11,7 @@ import java.io.Serializable;
 @Table(name = "tab_user")
 public class User implements Serializable {
     @Id
-    private int uid;//用户id
+    private Integer uid;//用户id
     private String username;//用户名，账号
     private String password;//密码
     private String name;//真实姓名
@@ -42,7 +41,7 @@ public class User implements Serializable {
      * @param status
      * @param code
      */
-    public User(int uid, String username, String password, String name, String birthday, String sex, String telephone, String email, String status, String code) {
+    public User(Integer uid, String username, String password, String name, String birthday, String sex, String telephone, String email, String status, String code) {
         this.uid = uid;
         this.username = username;
         this.password = password;
@@ -55,11 +54,11 @@ public class User implements Serializable {
         this.code = code;
     }
 
-    public int getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 

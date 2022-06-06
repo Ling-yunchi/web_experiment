@@ -12,17 +12,17 @@ import java.util.List;
 @Table(name = "tab_route")
 public class Route implements Serializable {
     @Id
-    private int rid;//线路id，必输
+    private Integer rid;//线路id，必输
     private String rname;//线路名称，必输
     private double price;//价格，必输
-    private String routeIntroduce;//线路介绍
+    private String routeIntegerroduce;//线路介绍
     private String rflag;   //是否上架，必输，0代表没有上架，1代表是上架
     private String rdate;   //上架时间
     private String isThemeTour;//是否主题旅游，必输，0代表不是，1代表是
-    private int count;//收藏数量
-    private int cid;//所属分类，必输
+    private Integer count;//收藏数量
+    private Integer cid;//所属分类，必输
     private String rimage;//缩略图
-    private int sid;//所属商家
+    private Integer sid;//所属商家
     private String sourceId;//抓取数据的来源id
 
     private Category category;//所属分类
@@ -38,10 +38,11 @@ public class Route implements Serializable {
 
     /**
      * 有参构造方法
+     *
      * @param rid
      * @param rname
      * @param price
-     * @param routeIntroduce
+     * @param routeIntegerroduce
      * @param rflag
      * @param rdate
      * @param isThemeTour
@@ -51,11 +52,11 @@ public class Route implements Serializable {
      * @param sid
      * @param sourceId
      */
-    public Route(int rid, String rname, double price, String routeIntroduce, String rflag, String rdate, String isThemeTour, int count, int cid, String rimage, int sid, String sourceId) {
+    public Route(Integer rid, String rname, double price, String routeIntegerroduce, String rflag, String rdate, String isThemeTour, Integer count, Integer cid, String rimage, Integer sid, String sourceId) {
         this.rid = rid;
         this.rname = rname;
         this.price = price;
-        this.routeIntroduce = routeIntroduce;
+        this.routeIntegerroduce = routeIntegerroduce;
         this.rflag = rflag;
         this.rdate = rdate;
         this.isThemeTour = isThemeTour;
@@ -98,11 +99,11 @@ public class Route implements Serializable {
         this.sourceId = sourceId;
     }
 
-    public int getRid() {
+    public Integer getRid() {
         return rid;
     }
 
-    public void setRid(int rid) {
+    public void setRid(Integer rid) {
         this.rid = rid;
     }
 
@@ -122,12 +123,12 @@ public class Route implements Serializable {
         this.price = price;
     }
 
-    public String getRouteIntroduce() {
-        return routeIntroduce;
+    public String getRouteIntegerroduce() {
+        return routeIntegerroduce;
     }
 
-    public void setRouteIntroduce(String routeIntroduce) {
-        this.routeIntroduce = routeIntroduce;
+    public void setRouteIntegerroduce(String routeIntegerroduce) {
+        this.routeIntegerroduce = routeIntegerroduce;
     }
 
     public String getRflag() {
@@ -154,19 +155,19 @@ public class Route implements Serializable {
         this.isThemeTour = isThemeTour;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(int cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 
@@ -178,11 +179,11 @@ public class Route implements Serializable {
         this.rimage = rimage;
     }
 
-    public int getSid() {
+    public Integer getSid() {
         return sid;
     }
 
-    public void setSid(int sid) {
+    public void setSid(Integer sid) {
         this.sid = sid;
     }
 }
