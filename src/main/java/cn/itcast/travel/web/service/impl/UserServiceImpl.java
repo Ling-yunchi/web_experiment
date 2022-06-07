@@ -5,6 +5,7 @@ import cn.itcast.travel.dao.impl.UserDaoImpl;
 import cn.itcast.travel.domain.User;
 import cn.itcast.travel.module.ResultInfo;
 import cn.itcast.travel.module.UserResult;
+import cn.itcast.travel.util.UuidUtil;
 import cn.itcast.travel.web.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ public class UserServiceImpl implements UserService {
         if (userDao.findByUsername(user.getUsername()) != null) {
             return new ResultInfo(false, "用户名已存在");
         }
+        user.setCode(UuidUtil.getUuid());
         userDao.save(user);
-        return new ResultInfo(true, "注册成功");
+        String res = user.getUid().toString() + "&" + user.getCode();
+        return new ResultInfo(true, "注册成功", res);
     }
 
     @Override

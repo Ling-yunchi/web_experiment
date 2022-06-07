@@ -11,6 +11,6 @@ public class RouteImgDaoImpl extends BaseDaoImpl<RouteImg> implements RouteImgDa
     @Override
     public List<RouteImg> findByRid(Integer rid) {
         String sql = "select * from " + super.tableName + " where rid = ?";
-        return super.jdbcTemplate.query(sql, new BeanPropertyRowMapper<RouteImg>(), rid);
+        return super.jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(RouteImg.class), rid);
     }
 }

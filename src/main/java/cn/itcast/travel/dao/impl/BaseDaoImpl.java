@@ -114,10 +114,15 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             StringBuilder sql2 = new StringBuilder(" values (");
             for (Map.Entry<String, Method> entry : columnGetterMap.entrySet()) {
                 String columnName = entry.getKey();
+                if (columnName.equals(idFieldName)) {
+                    continue;
+                }
                 Method getter = entry.getValue();
                 try {
                     sql.append(columnName).append(",");
-                    sql2.append(getter.invoke(t)).append(",");
+                    Object value = getter.invoke(t);
+                    // FIXME 如果值为null，则抛出异常
+                    sql2.append(value instanceof String ? "'" + value + "'" : value.toString()).append(",");
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     throw new RuntimeException("无法调用" + columnName + "的getter方法");
                 }
@@ -136,7 +141,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                 Method getter = entry.getValue();
                 if (!columnName.equals(idFieldName)) {
                     try {
-                        sql.append(columnName).append(" = ").append(getter.invoke(t)).append(",");
+                        Object value = getter.invoke(t);
+                        sql.append(columnName).append(" = ").append(value instanceof String ? "'" + value + "'" : value.toString()).append(",");
                     } catch (InvocationTargetException | IllegalAccessException e) {
                         throw new RuntimeException("无法调用" + columnName + "的getter方法");
                     }
@@ -145,7 +151,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             sql.deleteCharAt(sql.length() - 1);
             sql.append(" where ").append(idFieldName).append(" = ").append(idValue);
         }
-        log.debug("save sql: " + sql.toString());
+        log.debug("save sql: " + sql);
         return jdbcTemplate.update(sql.toString());
     }
 

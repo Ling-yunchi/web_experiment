@@ -1,8 +1,10 @@
 package cn.itcast.travel.web.service.impl;
 
+import cn.itcast.travel.dao.FavoriteDao;
 import cn.itcast.travel.dao.RouteDao;
 import cn.itcast.travel.dao.RouteImgDao;
 import cn.itcast.travel.dao.SellerDao;
+import cn.itcast.travel.dao.impl.FavoriteDaoImpl;
 import cn.itcast.travel.dao.impl.RouteDaoImpl;
 import cn.itcast.travel.dao.impl.RouteImgDaoImpl;
 import cn.itcast.travel.dao.impl.SellerDaoImpl;
@@ -22,6 +24,7 @@ public class RouteServiceImpl implements RouteService {
     private final RouteDao routeDao = new RouteDaoImpl();
     private final RouteImgDao routeImgDao = new RouteImgDaoImpl();
     private final SellerDao sellerDao = new SellerDaoImpl();
+    private final FavoriteDao favoriteDao = new FavoriteDaoImpl();
 
     @Override
     public PageResult<Route> pageQuery(Integer cid, String rname, Integer currentPage, Integer pageSize) {
@@ -39,10 +42,12 @@ public class RouteServiceImpl implements RouteService {
         }
         List<RouteImg> routeImgList = routeImgDao.findByRid(rid);
         Seller seller = sellerDao.findById(route.getSid());
+        Integer count = favoriteDao.countByRid(rid);
         RouteResult res = new RouteResult();
-        BeanUtils.copyProperties(route, res);
+        BeanUtils.copyProperties(res, route);
         res.setRouteImgList(routeImgList);
         res.setSeller(seller);
+        res.setCount(count);
         return new ResultInfo(true, "查询成功", res);
     }
 }

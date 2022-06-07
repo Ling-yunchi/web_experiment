@@ -1,6 +1,6 @@
 <script>
     $(() => {
-        $("div.logout").hide();
+        $("div.login").hide();
         $.get("/user/self", {}, (data) => {
             if (!data.flag) {
                 $("div.login_out").show()
