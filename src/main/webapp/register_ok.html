@@ -26,8 +26,8 @@
             alert("激活码不存在，请重新注册")
             window.location.href = "/register"
         } else {
-            let [userId, code] = active_code.split("&");
-            $("#active").attr("href", "/active?id=" + userId + "&code=" + code)
+            let [username, code] = active_code.split("&");
+            $("#active").attr("href", "/user/active?username=" + username + "&code=" + code)
         }
     })
 </script>

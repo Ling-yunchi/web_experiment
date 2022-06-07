@@ -23,8 +23,9 @@ public class UserServiceImpl implements UserService {
             return new ResultInfo(false, "用户名已存在");
         }
         user.setCode(UuidUtil.getUuid());
+        user.setStatus("N");
         userDao.save(user);
-        String res = user.getUid().toString() + "&" + user.getCode();
+        String res = user.getUsername() + "&" + user.getCode();
         return new ResultInfo(true, "注册成功", res);
     }
 
@@ -64,17 +65,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultInfo active(Integer id, String code) {
+    public void active(String username, String code, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html;charset=utf-8");
         if (code == null) {
-            return new ResultInfo(false, "激活码不能为空");
+            resp.getWriter().write("<h1>激活失败</h1>");
+            return;
         }
-        User user = userDao.findById(id);
+        User user = userDao.findByUsername(username);
         if (user == null) {
-            return new ResultInfo(false, "用户不存在");
+            resp.getWriter().write("<h1>用户不存在</h1>");
+            return;
         }
-        user.setCode(code);
+        if (!user.getCode().equals(code)) {
+            resp.getWriter().write("<h1>激活失败，激活码不正确</h1>");
+            return;
+        }
         user.setStatus("Y");
         userDao.save(user);
-        return new ResultInfo(true, "激活成功");
+        resp.getWriter().write("<h1>激活成功</h1>");
     }
 }

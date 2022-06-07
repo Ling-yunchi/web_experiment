@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -107,6 +108,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             throw new RuntimeException("无法调用" + idFieldName + "的getter方法");
         }
         StringBuilder sql;
+        List<Object> params = new LinkedList<>();
         if (idValue == null) {
             // insert
             log.debug("save insert");
@@ -119,13 +121,13 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                 }
                 Method getter = entry.getValue();
                 try {
-                    sql.append(columnName).append(",");
                     Object value = getter.invoke(t);
-                    // FIXME 如果值为null，则抛出异常
-                    sql2.append(value instanceof String ? "'" + value + "'" : value.toString()).append(",");
+                    params.add(value);
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     throw new RuntimeException("无法调用" + columnName + "的getter方法");
                 }
+                sql.append(columnName).append(",");
+                sql2.append("?").append(",");
             }
             sql.deleteCharAt(sql.length() - 1);
             sql2.deleteCharAt(sql2.length() - 1);
@@ -139,20 +141,26 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             for (Map.Entry<String, Method> entry : columnGetterMap.entrySet()) {
                 String columnName = entry.getKey();
                 Method getter = entry.getValue();
-                if (!columnName.equals(idFieldName)) {
-                    try {
-                        Object value = getter.invoke(t);
-                        sql.append(columnName).append(" = ").append(value instanceof String ? "'" + value + "'" : value.toString()).append(",");
-                    } catch (InvocationTargetException | IllegalAccessException e) {
-                        throw new RuntimeException("无法调用" + columnName + "的getter方法");
-                    }
+                if (columnName.equals(idFieldName)) {
+                    continue;
                 }
+                try {
+                    Object value = getter.invoke(t);
+                    params.add(value);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    throw new RuntimeException("无法调用" + columnName + "的getter方法");
+                }
+                sql.append(columnName).append(" = ").append("?").append(",");
+
             }
             sql.deleteCharAt(sql.length() - 1);
-            sql.append(" where ").append(idFieldName).append(" = ").append(idValue);
+            sql.append(" where ").append(idFieldName).append(" = ").append("?");
+            params.add(idValue);
         }
         log.debug("save sql: " + sql);
-        return jdbcTemplate.update(sql.toString());
+        log.debug("save params: " + params);
+
+        return jdbcTemplate.update(sql.toString(), params.toArray());
     }
 
     @Override

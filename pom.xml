@@ -68,6 +68,8 @@
             <version>1.1.1</version>
             <scope>compile</scope>
         </dependency>
+        <!--simplelog-->
+
 
         <!-- Lombok依赖 -->
         <dependency>

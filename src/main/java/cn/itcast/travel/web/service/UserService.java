@@ -16,5 +16,5 @@ public interface UserService {
 
     void logout(HttpServletRequest res, HttpServletResponse resp) throws IOException;
 
-    ResultInfo active(Integer id, String code);
+    void active(String username, String code, HttpServletResponse resp) throws IOException;
 }
