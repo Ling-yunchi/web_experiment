@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void active(String username, String code, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html;charset=utf-8");
         if (code == null) {
             resp.getWriter().write("<h1>激活失败</h1>");
             return;
@@ -82,6 +81,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setStatus("Y");
         userDao.save(user);
+        resp.setContentType("text/html;charset=utf-8");
         resp.getWriter().write("<h1>激活成功</h1>");
     }
 }

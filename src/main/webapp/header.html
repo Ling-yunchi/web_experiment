@@ -8,7 +8,7 @@
             } else {
                 $("div.login_out").hide()
                 $("div.login").show()
-                $("#span_username").text("欢迎回来，" + data.data.username);
+                $("#span_username").text("欢迎回来，" + data.data.name);
             }
         });
         $.get("/category/findAll", {}, (date) => {

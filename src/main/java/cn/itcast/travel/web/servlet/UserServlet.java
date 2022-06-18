@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 public class UserServlet extends BaseServlet {
     UserService userService = new UserServiceImpl();
 
-    public ResultInfo register(@RequestBody User user) throws Exception {
+    public ResultInfo register(@RequestBody User user) {
         return userService.register(user);
     }
 
-    public ResultInfo login(@RequestBody User user, HttpServletRequest res) throws Exception {
+    public ResultInfo login(@RequestBody User user, HttpServletRequest res) {
         return userService.login(user, res);
     }
 
@@ -28,7 +28,7 @@ public class UserServlet extends BaseServlet {
         userService.active(username, code, resp);
     }
 
-    public ResultInfo self(HttpServletRequest res) throws Exception {
+    public ResultInfo self(HttpServletRequest res) {
         return userService.self(res);
     }
 
